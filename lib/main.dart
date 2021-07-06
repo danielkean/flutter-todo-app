@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,28 +13,22 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: MyHomePage(title: 'Flutter To-Do List App'),
+      home: MainPage(title: 'Flutter To-Do List App'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+class MainPage extends StatefulWidget {
+  MainPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MainPageState createState() => _MainPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+class _MainPageState extends State<MainPage> {
+  List<int> todos = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 
   @override
   Widget build(BuildContext context) {
@@ -41,25 +36,55 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
+      body: ListView.separated(
+        physics: BouncingScrollPhysics(),
+        itemCount: todos.length,
+        separatorBuilder: (context, index) => Divider(),
+        itemBuilder: (context, index) {
+          final todo = todos[index];
+          return Slidable(
+            actionPane: SlidableDrawerActionPane(),
+            child: buildListTile(todo),
+            secondaryActions: <Widget>[
+              IconSlideAction(
+                caption: 'Delete',
+                color: Colors.red,
+                icon: Icons.delete,
+                onTap: () {},
+              )
+            ],
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        onPressed: () => {},
+        tooltip: 'Add Task',
         child: Icon(Icons.add),
       ),
     );
   }
+
+  Widget buildListTile(int todo) => ListTile(
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
+        leading: CircleAvatar(
+          backgroundColor: Colors.orange,
+          radius: 28,
+        ),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Task Title",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text("Task Description."),
+          ],
+        ),
+      );
 }
