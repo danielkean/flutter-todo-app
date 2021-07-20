@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_todo_app/widgets/slidable_tile.dart';
+
+import 'data/data.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,16 +21,20 @@ class MyApp extends StatelessWidget {
 }
 
 class MainPage extends StatefulWidget {
-  MainPage({Key? key, required this.title}) : super(key: key);
-
   final String title;
+
+  MainPage({Key? key, required this.title}) : super(key: key);
 
   @override
   _MainPageState createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
-  List<int> todos = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+  @override
+  void initState() {
+    super.initState();
+    populateData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,19 +47,7 @@ class _MainPageState extends State<MainPage> {
         itemCount: todos.length,
         separatorBuilder: (context, index) => Divider(),
         itemBuilder: (context, index) {
-          final todo = todos[index];
-          return Slidable(
-            actionPane: SlidableDrawerActionPane(),
-            child: buildListTile(todo),
-            secondaryActions: <Widget>[
-              IconSlideAction(
-                caption: 'Delete',
-                color: Colors.red,
-                icon: Icons.delete,
-                onTap: () {},
-              )
-            ],
-          );
+          return SlidableTile(todo: todos[index]);
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -63,28 +57,4 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
-
-  Widget buildListTile(int todo) => ListTile(
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 16,
-        ),
-        leading: CircleAvatar(
-          backgroundColor: Colors.orange,
-          radius: 28,
-        ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Task Title",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text("Task Description."),
-          ],
-        ),
-      );
 }
