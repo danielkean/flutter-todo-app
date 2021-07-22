@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_todo_app/api/firestore.dart';
 import 'package:flutter_todo_app/model/todo.dart';
 
 class SlidableTile extends StatefulWidget {
@@ -18,22 +19,26 @@ class _SlidableTileState extends State<SlidableTile> {
   @override
   Widget build(BuildContext context) {
     return Slidable(
+      key: Key(widget.todo.title),
       actionPane: SlidableDrawerActionPane(),
-      child: buildListTile(widget.todo),
       secondaryActions: <Widget>[
         IconSlideAction(
           caption: 'Delete',
           color: Colors.red,
           icon: Icons.delete,
-          onTap: () {},
+          onTap: () {
+            Firestore.delete(widget.todo);
+          },
         ),
       ],
-      key: Key(widget.todo.title),
+      child: buildListTile(widget.todo),
     );
   }
 
   Widget buildListTile(Todo todo) {
     Color textColour = (todo.isCompleted) ? Colors.grey : Colors.black;
+    TextDecoration textDecoration =
+        (todo.isCompleted) ? TextDecoration.lineThrough : TextDecoration.none;
 
     return ListTile(
       contentPadding: EdgeInsets.symmetric(
@@ -43,9 +48,15 @@ class _SlidableTileState extends State<SlidableTile> {
       leading: Checkbox(
         value: todo.isCompleted,
         onChanged: (bool? value) {
-          setState(() {
-            todo.isCompleted = !todo.isCompleted;
-          });
+          Firestore.update(
+            widget.todo.id,
+            Todo(
+              title: widget.todo.title,
+              description: widget.todo.description,
+              dateCreated: widget.todo.dateCreated,
+              isCompleted: !widget.todo.isCompleted,
+            ),
+          );
         },
       ),
       title: Column(
@@ -54,28 +65,35 @@ class _SlidableTileState extends State<SlidableTile> {
           Text(
             todo.title,
             style: TextStyle(
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               color: textColour,
               decorationColor: textColour,
               decorationStyle: TextDecorationStyle.solid,
-              decoration: (todo.isCompleted)
-                  ? TextDecoration.lineThrough
-                  : TextDecoration.none,
+              decoration: textDecoration,
+            ),
+          ),
+          Text(
+            todo.description,
+            style: TextStyle(
+              fontSize: 16,
+              color: textColour,
+              decorationColor: textColour,
+              decorationStyle: TextDecorationStyle.solid,
+              decoration: textDecoration,
             ),
           ),
           const SizedBox(height: 4),
           Text(
-            todo.description,
+            todo.dateCreated,
             style: TextStyle(
-              color: textColour,
+              fontSize: 12,
+              color: Colors.grey,
               decorationColor: textColour,
               decorationStyle: TextDecorationStyle.solid,
-              decoration: (todo.isCompleted)
-                  ? TextDecoration.lineThrough
-                  : TextDecoration.none,
+              decoration: textDecoration,
             ),
           ),
-          //Text(todo.isCompleted ? "True" : "False"),
         ],
       ),
     );
