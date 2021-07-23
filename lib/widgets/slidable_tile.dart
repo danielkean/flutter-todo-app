@@ -4,7 +4,7 @@ import 'package:flutter_todo_app/api/firestore.dart';
 import 'package:flutter_todo_app/model/todo.dart';
 import 'package:flutter_todo_app/utils/utils.dart';
 
-class SlidableTile extends StatefulWidget {
+class SlidableTile extends StatelessWidget {
   final Todo todo;
 
   const SlidableTile({
@@ -13,14 +13,9 @@ class SlidableTile extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _SlidableTileState createState() => _SlidableTileState();
-}
-
-class _SlidableTileState extends State<SlidableTile> {
-  @override
   Widget build(BuildContext context) {
     return Slidable(
-      key: Key(widget.todo.title),
+      key: Key(todo.id),
       actionPane: SlidableDrawerActionPane(),
       secondaryActions: <Widget>[
         IconSlideAction(
@@ -28,7 +23,7 @@ class _SlidableTileState extends State<SlidableTile> {
           color: Colors.red,
           icon: Icons.delete,
           onTap: () {
-            Firestore.delete(widget.todo);
+            Firestore.delete(todo);
             Utils.showSnackBar(
               context: context,
               text: "Todo has been deleted.",
@@ -37,7 +32,7 @@ class _SlidableTileState extends State<SlidableTile> {
           },
         ),
       ],
-      child: buildListTile(widget.todo),
+      child: buildListTile(todo),
     );
   }
 
@@ -55,12 +50,12 @@ class _SlidableTileState extends State<SlidableTile> {
         value: todo.isCompleted,
         onChanged: (bool? value) {
           Firestore.update(
-            widget.todo.id,
+            todo.id,
             Todo(
-              title: widget.todo.title,
-              description: widget.todo.description,
-              dateCreated: widget.todo.dateCreated,
-              isCompleted: !widget.todo.isCompleted,
+              title: todo.title,
+              description: todo.description,
+              dateCreated: todo.dateCreated,
+              isCompleted: !todo.isCompleted,
             ),
           );
         },
