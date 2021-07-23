@@ -3,7 +3,9 @@ import 'package:flutter_todo_app/model/todo.dart';
 
 class Firestore {
   static Future add(Todo todo) async {
-    FirebaseFirestore.instance.collection('todos').add(todo.toJson());
+    final document = FirebaseFirestore.instance.collection('todos').doc();
+    todo.id = document.id;
+    await document.set(todo.toJson());
   }
 
   static Future update(String id, Todo todo) async {

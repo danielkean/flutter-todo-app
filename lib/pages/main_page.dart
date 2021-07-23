@@ -10,6 +10,20 @@ class MainPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Flutter To-Do List App"),
+        actions: [
+          IconButton(
+            tooltip: 'Add Todo',
+            icon: const Icon(Icons.add),
+            onPressed: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => AddTodoPage(),
+                ),
+              )
+            },
+          )
+        ],
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
@@ -42,18 +56,6 @@ class MainPage extends StatelessWidget {
             },
           );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (BuildContext context) => AddTodoPage(),
-            ),
-          )
-        },
-        tooltip: 'Add Todo',
-        child: const Icon(Icons.add),
       ),
     );
   }

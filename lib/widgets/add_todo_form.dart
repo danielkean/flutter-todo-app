@@ -61,8 +61,13 @@ class _AddTodoFormState extends State<AddTodoForm> {
         children: [
           TextFormField(
             controller: titleController,
-            textCapitalization: TextCapitalization.words,
+            textCapitalization: TextCapitalization.sentences,
             maxLength: 30,
+            autofocus: true,
+            textInputAction: TextInputAction.next,
+            onFieldSubmitted: (v) {
+              FocusScope.of(context).nextFocus();
+            },
             decoration: InputDecoration(
               labelText: "Title",
               suffixIcon: (titleController.text.isEmpty)
