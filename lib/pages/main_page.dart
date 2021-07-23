@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_todo_app/api/firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_todo_app/model/todo.dart';
+import 'package:flutter_todo_app/pages/add_todo_page.dart';
 import 'package:flutter_todo_app/widgets/slidable_tile.dart';
 
 class MainPage extends StatelessWidget {
@@ -20,7 +20,8 @@ class MainPage extends StatelessWidget {
           BuildContext context,
           AsyncSnapshot<QuerySnapshot> snapshot,
         ) {
-          if (!snapshot.hasData) return const SizedBox.shrink();
+          if (!snapshot.hasData || snapshot.data!.docs.length == 0)
+            return Center(child: const Text("No todos"));
           return ListView.separated(
             physics: BouncingScrollPhysics(),
             itemCount: snapshot.data!.docs.length,
@@ -44,15 +45,15 @@ class MainPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => {
-          Firestore.add(Todo(
-            title: "Firestore Title",
-            description: "description",
-            isCompleted: false,
-            dateCreated: DateTime.now().toString(),
-          ))
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => AddTodoPage(),
+            ),
+          )
         },
-        tooltip: 'Add Task',
-        child: Icon(Icons.add),
+        tooltip: 'Add Todo',
+        child: const Icon(Icons.add),
       ),
     );
   }

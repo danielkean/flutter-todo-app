@@ -41,7 +41,7 @@ class _SlidableTileState extends State<SlidableTile> {
         (todo.isCompleted) ? TextDecoration.lineThrough : TextDecoration.none;
 
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(
+      contentPadding: const EdgeInsets.symmetric(
         horizontal: 16,
         vertical: 16,
       ),
@@ -73,17 +73,19 @@ class _SlidableTileState extends State<SlidableTile> {
               decoration: textDecoration,
             ),
           ),
+          const SizedBox(height: 2),
           Text(
             todo.description,
             style: TextStyle(
               fontSize: 16,
+              fontWeight: FontWeight.normal,
               color: textColour,
               decorationColor: textColour,
               decorationStyle: TextDecorationStyle.solid,
               decoration: textDecoration,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 6),
           Text(
             todo.dateCreated,
             style: TextStyle(
