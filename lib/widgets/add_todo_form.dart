@@ -16,9 +16,16 @@ class _AddTodoFormState extends State<AddTodoForm> {
 
   @override
   void dispose() {
+    super.dispose();
     titleController.dispose();
     descriptionController.dispose();
-    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    titleController.addListener(() => setState(() {}));
+    descriptionController.addListener(() => setState(() {}));
   }
 
   void addTask() {
@@ -55,11 +62,16 @@ class _AddTodoFormState extends State<AddTodoForm> {
         children: [
           TextFormField(
             controller: titleController,
-            textCapitalization: TextCapitalization.sentences,
+            textCapitalization: TextCapitalization.words,
             maxLength: 30,
             decoration: InputDecoration(
               labelText: "Title",
-              hintText: "Please enter a todo title...",
+              suffixIcon: (titleController.text.isEmpty)
+                  ? Container(width: 0)
+                  : IconButton(
+                      icon: Icon(Icons.clear),
+                      onPressed: () => titleController.clear(),
+                    ),
             ),
             validator: (value) {
               if (value == null || value.isEmpty || value.trim().length == 0) {
@@ -74,7 +86,12 @@ class _AddTodoFormState extends State<AddTodoForm> {
             maxLength: 60,
             decoration: InputDecoration(
               labelText: "Description",
-              hintText: "Please enter a todo description...",
+              suffixIcon: (descriptionController.text.isEmpty)
+                  ? Container(width: 0)
+                  : IconButton(
+                      icon: Icon(Icons.clear),
+                      onPressed: () => descriptionController.clear(),
+                    ),
             ),
             validator: (value) {
               if (value == null || value.isEmpty || value.trim().length == 0) {
