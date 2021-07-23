@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/api/firestore.dart';
 import 'package:flutter_todo_app/model/todo.dart';
+import 'package:flutter_todo_app/utils/utils.dart';
 
 class AddTodoForm extends StatefulWidget {
   const AddTodoForm({Key? key}) : super(key: key);
@@ -45,12 +46,10 @@ class _AddTodoFormState extends State<AddTodoForm> {
     Navigator.of(context).pop();
 
     // Show snackbar
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          "Todo task has been added.",
-        ),
-      ),
+    Utils.showSnackBar(
+      context: context,
+      text: "Todo task has been added.",
+      colour: Colors.green,
     );
   }
 

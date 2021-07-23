@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_todo_app/api/firestore.dart';
 import 'package:flutter_todo_app/model/todo.dart';
+import 'package:flutter_todo_app/utils/utils.dart';
 
 class SlidableTile extends StatefulWidget {
   final Todo todo;
@@ -28,6 +29,11 @@ class _SlidableTileState extends State<SlidableTile> {
           icon: Icons.delete,
           onTap: () {
             Firestore.delete(widget.todo);
+            Utils.showSnackBar(
+              context: context,
+              text: "Todo has been deleted.",
+              colour: Colors.red,
+            );
           },
         ),
       ],
