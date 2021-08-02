@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_todo_app/api/firestore.dart';
 import 'package:flutter_todo_app/model/todo.dart';
 import 'package:flutter_todo_app/utils/utils.dart';
@@ -14,29 +13,10 @@ class SlidableTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Slidable(
-      key: Key(todo.id),
-      actionPane: SlidableDrawerActionPane(),
-      secondaryActions: <Widget>[
-        IconSlideAction(
-          caption: 'Delete',
-          color: Colors.red,
-          icon: Icons.delete,
-          onTap: () {
-            Firestore.delete(todo);
-            Utils.showSnackBar(
-              context: context,
-              text: "Todo has been deleted.",
-              colour: Colors.red,
-            );
-          },
-        ),
-      ],
-      child: buildListTile(todo),
-    );
+    return buildListTile(context, todo);
   }
 
-  Widget buildListTile(Todo todo) {
+  Widget buildListTile(BuildContext context, Todo todo) {
     Color textColour = (todo.isCompleted) ? Colors.grey : Colors.black;
     TextDecoration textDecoration =
         (todo.isCompleted) ? TextDecoration.lineThrough : TextDecoration.none;
@@ -98,6 +78,17 @@ class SlidableTile extends StatelessWidget {
             ),
           ),
         ],
+      ),
+      trailing: IconButton(
+        icon: Icon(Icons.close),
+        onPressed: () {
+          Firestore.delete(todo);
+          Utils.showSnackBar(
+            context: context,
+            text: "Todo has been deleted.",
+            colour: Colors.red,
+          );
+        },
       ),
     );
   }

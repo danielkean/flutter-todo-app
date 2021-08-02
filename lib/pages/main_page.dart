@@ -37,7 +37,7 @@ class MainPage extends StatelessWidget {
           if (!snapshot.hasData || snapshot.data!.docs.length == 0)
             return Center(child: const Text("No todos"));
           return ListView.separated(
-            physics: BouncingScrollPhysics(),
+            //physics: BouncingScrollPhysics(),
             itemCount: snapshot.data!.docs.length,
             separatorBuilder: (context, index) => Divider(
               thickness: 1,

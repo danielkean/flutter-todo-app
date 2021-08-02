@@ -1,5 +1,5 @@
 name: flutter_todo_app
-description: A new Flutter project.
+description: A to-do list application, for the purposes of performance testing.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -26,8 +26,6 @@ dependencies:
   
   firebase_core: ^1.4.0
   cloud_firestore: ^2.4.0
-
-  flutter_slidable: ^0.6.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
