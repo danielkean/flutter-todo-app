@@ -17,17 +17,4 @@ class Firestore {
     final doc = FirebaseFirestore.instance.collection('todos').doc(todo.id);
     await doc.delete();
   }
-
-  static void populateData() {
-    for (var i = 0; i < 1000; i++) {
-      Firestore.add(
-        Todo(
-          title: "TasK: $i",
-          description: "Description: $i",
-          isCompleted: (i % 2 == 0) ? true : false,
-          dateCreated: DateTime.now().toString(),
-        ),
-      );
-    }
-  }
 }
